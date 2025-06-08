@@ -1,5 +1,7 @@
 # AI-for-software-Engineering-Week-2
 
+![Alt text](./SKINCANCER.jpg)
+
 # HAM10000 Dataset
 
 ## Human Against Machine with 10000 Training Images
