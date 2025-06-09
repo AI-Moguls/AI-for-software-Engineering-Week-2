@@ -1,81 +1,150 @@
-# AI-for-software-Engineering-Week-2
+# Skin Cancer Classifier (HAM10000)
 
-![Alt text](./SKINCANCER.jpg)
+![Skin Cancer](./SKINCANCER.jpg)
 
-# HAM10000 Dataset
-
-## Human Against Machine with 10000 Training Images
-
-### Overview
-
+## Overview
 The HAM10000 dataset addresses a critical challenge in automated diagnosis of pigmented skin lesions: the small size and lack of diversity of available dermatoscopic image datasets. This comprehensive collection provides researchers and practitioners with a robust training set for academic machine learning purposes.
+This project provides a deep learning-based web app for classifying pigmented skin lesions using the [HAM10000 dataset](https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000). The app combines image analysis with patient metadata (age, sex, localization) for improved diagnostic accuracy.
 
-### Dataset Description
-
-The HAM10000 dataset consists of **10,015 dermatoscopic images** collected from different populations and acquired using various modalities. This diversity ensures better generalization and representation across different imaging conditions and patient demographics.
-
-### Diagnostic Categories
-
-The dataset includes a representative collection of all important diagnostic categories in the realm of pigmented lesions:
-
-- **Actinic keratoses and intraepithelial carcinoma / Bowen's disease (akiec)**
-- **Basal cell carcinoma (bcc)**
-- **Benign keratosis-like lesions (bkl)**
-  - Solar lentigines
-  - Seborrheic keratoses
-  - Lichen-planus like keratoses
-- **Dermatofibroma (df)**
-- **Melanoma (mel)**
-- **Melanocytic nevi (nv)**
-- **Vascular lesions (vasc)**
-  - Angiomas
-  - Angiokeratomas
-  - Pyogenic granulomas
-  - Hemorrhage
-
-### Ground Truth Validation
-
-The dataset maintains high quality standards through multiple validation methods:
-
-- **More than 50%** of lesions are confirmed through **histopathology (histo)** - the gold standard
-- Remaining cases are validated through:
-  - **Follow-up examination (follow_up)**
-  - **Expert consensus (consensus)**
-  - **Confirmation by in-vivo confocal microscopy (confocal)**
-
-### Dataset Structure
-
-- The dataset includes lesions with multiple images
-- Lesions can be tracked using the **lesion_id column** within the `HAM10000_metadata` file
-- This allows for proper handling of multiple views of the same lesion during training and evaluation
-
-### Evaluation and Testing
-
-- **The test set is not publicly available**
-- An official evaluation server remains running for fair comparison of methods
-- Researchers must submit their results to the official challenge website for evaluation
-- **All publications using HAM10000 data should be evaluated on the official test set** to ensure fair and standardized comparison between methods
-
-### Usage Guidelines
-
-This dataset is intended for:
-- Academic machine learning research
-- Development of automated skin lesion diagnosis systems
-- Training and validation of deep learning models for dermatoscopic image analysis
-
-### Citation and Evaluation
-
-When using this dataset in research:
-1. Ensure your method is evaluated on the official test set via the challenge website
-2. Follow proper academic citation guidelines
-3. Compare results fairly with other methods using the same evaluation framework
-
-### Files Included
-
-- Dermatoscopic images (10,015 total)
-- `HAM10000_metadata` file containing lesion tracking information and diagnostic labels
-- Documentation of validation methods for each case
+**Try the app live:**  
+[https://skin-classifier.streamlit.app/](https://skin-classifier.streamlit.app/)
 
 ---
 
-*For more information about the evaluation server and challenge details, please visit the official challenge website.*
+## Table of Contents
+
+- [Skin Cancer Classifier (HAM10000)](#skin-cancer-classifier-ham10000)
+  - [Overview](#overview)
+  - [Table of Contents](#table-of-contents)
+  - [Project Structure](#project-structure)
+  - [Dataset](#dataset)
+  - [Model Architecture](#model-architecture)
+  - [How to Run Locally](#how-to-run-locally)
+  - [Model File Handling](#model-file-handling)
+  - [Usage](#usage)
+  - [Results \& Evaluation](#results--evaluation)
+  - [Citation](#citation)
+  - [References](#references)
+  - [Contributors](#contributors)
+
+---
+
+## Project Structure
+
+```
+.
+├── app.py                # Streamlit web app
+├── index.ipynb           # Model training and exploration notebook
+├── requirements.txt      # Python dependencies
+├── runtime.txt           # Python version for deployment
+├── .gitignore
+├── README.md
+└── (model files not tracked in git)
+```
+
+---
+
+## Dataset
+
+- **HAM10000**: Human Against Machine with 10,000 training images.
+- **Images**: 10,015 dermatoscopic images of pigmented lesions.
+- **Metadata**: Age, sex, localization, and diagnostic labels.
+- **Diagnostic Categories**:
+  - Actinic keratoses (akiec)
+  - Basal cell carcinoma (bcc)
+  - Benign keratosis-like lesions (bkl)
+  - Dermatofibroma (df)
+  - Melanoma (mel)
+  - Melanocytic nevi (nv)
+  - Vascular lesions (vasc)
+
+See [dataset description](https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000) for more details.
+
+---
+
+## Model Architecture
+
+- **HybridModel**: Combines a CNN (ResNet50) for image features with a fully connected network for metadata.
+- **Inputs**: Dermatoscopic image + patient metadata (age, sex, localization).
+- **Outputs**: Probability distribution over 7 diagnostic classes.
+
+**Training details and code are available in [`index.ipynb`](./index.ipynb).**
+
+---
+
+## How to Run Locally
+
+1. **Clone the repository:**
+    ```sh
+    git clone https://github.com/yourusername/AI-for-software-Engineering-Week-2.git
+    cd AI-for-software-Engineering-Week-2
+    ```
+
+2. **Install dependencies:**
+    ```sh
+    pip install -r requirements.txt
+    ```
+
+3. **Download the trained model file:**
+    - Download `best_model.pth` from [Google Drive](https://drive.google.com/uc?export=download&id=1EnwjeXfYCrnqTiKffmX_bCH0AtiBRfwE) or your provided link.
+    - Place it in the project root directory.
+
+4. **Run the Streamlit app:**
+    ```sh
+    streamlit run app.py
+    ```
+
+---
+
+## Model File Handling
+
+- **Note:** Model files (`.pth`) are not tracked in git due to size limits.
+- The app will attempt to download the model file automatically if not present, using a public link.
+- You can also manually place `best_model.pth` in the project root.
+
+---
+
+## Usage
+
+1. **Upload a dermatoscopic image** (JPG/PNG).
+2. **Enter patient metadata**: Age, sex, and lesion localization.
+3. **Click "Run"** to get the predicted diagnosis and class probabilities.
+
+---
+
+## Results & Evaluation
+
+- The model achieves strong performance on the HAM10000 validation set.
+- For fair comparison, evaluate your method on the official test set via the challenge website.
+- See [`index.ipynb`](./index.ipynb) for training metrics, confusion matrix, and further analysis.
+
+---
+
+## Citation
+
+If you use this project or the HAM10000 dataset in your research, please cite:
+
+> Tschandl, P., Rosendahl, C., & Kittler, H. (2018). The HAM10000 dataset, a large collection of multi-source dermatoscopic images of common pigmented skin lesions. *Scientific Data*, 5, 180161.
+
+---
+
+## References
+
+- [HAM10000 Dataset on Kaggle](https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000)
+- [Official Challenge Website](https://challenge2018.isic-archive.com/)
+- [Streamlit Documentation](https://docs.streamlit.io/)
+
+---
+
+## Contributors
+
+- [Brian Ouko](https://github.com/WellBrian)  
+- [Mmabatho Naseba](https://github.com/Mmabatho)  
+- [Adebomi O. Isaiah](https://github.com/holuwercheyy)
+- [Lukhanyo Mzanywa](https://github.com/Luu-17)
+- [Letshego Sephiri](https://github.com/CaramelF)
+
+
+*For questions or contributions, please open an issue or pull request*
+
+
