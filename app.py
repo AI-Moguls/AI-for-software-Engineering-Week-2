@@ -4,6 +4,8 @@ import torch.nn as nn
 from torchvision import transforms, models
 from PIL import Image
 import numpy as np
+import os
+import urllib.request
 
 # --- Model Definition (from your notebook) ---
 class HybridModel(nn.Module):
@@ -97,3 +99,12 @@ if uploaded_file is not None:
         st.write("Probabilities:")
         for i, cname in enumerate(class_names):
             st.write(f"{cname}: {probs[i]:.2%}")
+
+MODEL_URL = "https://drive.google.com/file/d/1EnwjeXfYCrnqTiKffmX_bCH0AtiBRfwE/view?usp=drive_link"
+
+def download_model():
+    if not os.path.exists("best_model.pth"):
+        with st.spinner("Downloading model..."):
+            urllib.request.urlretrieve(MODEL_URL, "best_model.pth")
+
+download_model()
