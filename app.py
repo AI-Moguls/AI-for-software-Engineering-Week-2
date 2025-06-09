@@ -52,16 +52,11 @@ localization_categories = [
 meta_size = 1 + len(sex_categories) + len(localization_categories)  # 1+3+15=19
 
 # --- Load Model ---
-@st.cache_resource
-def load_model():
-    device = torch.device("cpu")
-    model = HybridModel(num_classes=len(classes), meta_size=meta_size)
-    checkpoint = torch.load('best_model.pth', map_location=device)
-    model.load_state_dict(checkpoint['model_state_dict'])
-    model.eval()
-    return model
-
-model = load_model()
+device = torch.device("cpu")
+model = HybridModel(num_classes=len(classes), meta_size=meta_size)
+checkpoint = torch.load('best_model.pth', map_location=device)
+model.load_state_dict(checkpoint['model_state_dict'])
+model.eval()
 
 # --- Image Transform ---
 val_transform = transforms.Compose([
