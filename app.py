@@ -56,7 +56,7 @@ meta_size = 1 + len(sex_categories) + len(localization_categories)  # 1+3+15=19
 # --- Load Model ---
 device = torch.device("cpu")
 model = HybridModel(num_classes=len(classes), meta_size=meta_size)
-checkpoint = torch.load('best_model.pth', map_location=device)
+checkpoint = torch.load('best_model.pth', map_location=device, weights_only=True)
 model.load_state_dict(checkpoint['model_state_dict'])
 model.eval()
 
