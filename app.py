@@ -78,24 +78,25 @@ localization = st.selectbox("Localization", localization_categories)
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file).convert('RGB')
-    st.image(image, caption='Uploaded Image', use_column_width=True)
+    st.image(image, caption='Uploaded Image', use_container_width=True)  # updated for deprecation
 
-    # Preprocess image
-    img_tensor = val_transform(image).unsqueeze(0)
+    if st.button("Run"):
+        # Preprocess image
+        img_tensor = val_transform(image).unsqueeze(0)
 
-    # Preprocess metadata
-    age_norm = age / 100.0
-    sex_encoded = [1 if sex == cat else 0 for cat in sex_categories]
-    loc_encoded = [1 if localization == cat else 0 for cat in localization_categories]
-    meta_tensor = torch.tensor([age_norm] + sex_encoded + loc_encoded, dtype=torch.float32).unsqueeze(0)
+        # Preprocess metadata
+        age_norm = age / 100.0
+        sex_encoded = [1 if sex == cat else 0 for cat in sex_categories]
+        loc_encoded = [1 if localization == cat else 0 for cat in localization_categories]
+        meta_tensor = torch.tensor([age_norm] + sex_encoded + loc_encoded, dtype=torch.float32).unsqueeze(0)
 
-    # Predict
-    with torch.no_grad():
-        outputs = model(img_tensor, meta_tensor)
-        probs = torch.softmax(outputs, dim=1).cpu().numpy()[0]
-        pred_idx = int(np.argmax(probs))
-        pred_class = class_names[pred_idx]
-        st.subheader(f"Prediction: {pred_class}")
-        st.write("Probabilities:")
-        for i, cname in enumerate(class_names):
-            st.write(f"{cname}: {probs[i]:.2%}")
+        # Predict
+        with torch.no_grad():
+            outputs = model(img_tensor, meta_tensor)
+            probs = torch.softmax(outputs, dim=1).cpu().numpy()[0]
+            pred_idx = int(np.argmax(probs))
+            pred_class = class_names[pred_idx]
+            st.subheader(f"Prediction: {pred_class}")
+            st.write("Probabilities:")
+            for i, cname in enumerate(class_names):
+                st.write(f"{cname}: {probs[i]:.2%}")
